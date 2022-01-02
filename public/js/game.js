@@ -1,4 +1,4 @@
-const WORLD_WIDTH = 1200
+const WORLD_WIDTH = 1800
 const WORLD_HEIGHT = 800
 
 
@@ -24,6 +24,8 @@ class GameObject extends Phaser.Scene {
         var rightKey;
         var spaceKey;
         var hasFired;
+        var score;
+        var scoreText;
     }
     
     preload ()
@@ -53,7 +55,8 @@ class GameObject extends Phaser.Scene {
         this.spaceship.setScale(0.3)
         this.spaceship.setCollideWorldBounds(true);
 
-
+        this.score = -10;
+        this.scoreText = this.add.text(90, 0, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
 
         // make player move on barrier
         this.physics.add.collider(this.spaceship, this.platforms);
@@ -78,7 +81,10 @@ class GameObject extends Phaser.Scene {
 
                 if (alien.x > bullenSplashLeft && alien.x < bulletSplashRight) {
                         alien.destroy()
-                    }
+                        this.score += 10;
+                        this.scoreText.setText('Score: ' + this.score);
+                        console.log(this.score)
+                    } 
             })
         })
 
@@ -109,7 +115,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 1 },
-            debug: true
+            debug: false
         }
     },
     scene: GameObject
